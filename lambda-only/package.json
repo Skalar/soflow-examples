@@ -1,0 +1,39 @@
+{
+  "name": "soflow-examples-lambda-only",
+  "version": "1.0.0",
+  "description": "Run workflow entirely in lambda",
+  "main": "index.js",
+  "author": "Trym Skaar",
+  "license": "MIT",
+  "private": true,
+  "dependencies": {
+    "node-fetch": "^2.1.1",
+    "soflow": "^0.0.1"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.0.0-beta.40",
+    "@babel/core": "^7.0.0-beta.40",
+    "@babel/preset-env": "^7.0.0-beta.40",
+    "ora": "^2.0.0"
+  },
+  "scripts": {
+    "deploy":
+      "export SOFLOW_NAMESPACE=$USER-sfex-lambda-only SOFLOW_WORKFLOWS_VERSION=v1 && rm -rf .transpiled && babel -q -d .transpiled --only '+(tasks|workflows|scripts)/**' . && ln -s ../node_modules .transpiled/node_modules && cd .transpiled && scripts/soflow-setup.js && cd .. && rm -rf .transpiled",
+    "teardown":
+      "SOFLOW_NAMESPACE=$USER-sfex-lambda-only SOFLOW_WORKFLOWS_VERSION=v1 scripts/soflow-teardown.js",
+    "archiveRepositories":
+      "SOFLOW_NAMESPACE=$USER-sfex-lambda-only SOFLOW_WORKFLOWS_VERSION=v1 scripts/archiveRepositories.js"
+  },
+  "babel": {
+    "presets": [
+      [
+        "@babel/preset-env",
+        {
+          "targets": {
+            "node": "6.10"
+          }
+        }
+      ]
+    ]
+  }
+}
